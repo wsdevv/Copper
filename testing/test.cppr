@@ -1,0 +1,5 @@
+
+chunk: sayhelloworld ~ {
+run: log ~ `hello%n`;
+}
+run: sayhelloworld ~;
