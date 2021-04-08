@@ -1,2 +1,2 @@
 language = "bash"
-run = ""
+run = "g++ main.cpp -o ./dist/copperc && chmod u+x ./dist/copperc && ./dist/copperc ./testing/test.cppr ./testing/ && chmod u+x ./testing/out && ./testing/out"

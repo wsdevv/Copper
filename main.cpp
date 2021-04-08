@@ -8,7 +8,7 @@
 /*
  * NOTICE:
  * The Copper programming language is in development,
- * The compiler (this code) does not yet "compile" anything,
+ * The compiler (this code) does "compile" things, it is very buggy though
  * This project will start accepting contributions when
  * a. It gets further into development
  * b. The creator adds more commets
@@ -23,7 +23,18 @@ using namespace std;
 int main(int argc, char* argv[]) {
   ifstream getf(argv[1]);
   ifstream std("./libs/std.asm");
-  ofstream out("./out.asm");
+   
+  string run;
+  
+  //agv[2] is the location where the compiled code is stored
+  if (argv[2]) {
+  run = argv[2] + string("out.asm");
+  }
+  else {
+   run = string("out.asm");
+  }
+  ofstream out(run);
+
   string ff = "";
   string fstd = "";
 
@@ -85,8 +96,19 @@ int main(int argc, char* argv[]) {
   out.close();
   std.close();
   getf.close();
-  system("nasm -f elf32 -g out.asm");
-  system("ld -m elf_i386 -s -o out out.o");
+
+  //compiles code to directory
+  if (argv[2]) {
+     run = "";
+     run = string("nasm -f elf32 -g ") + argv[2] + string("out.asm");
+     system(run.c_str());
+     run = string("ld -m elf_i386 -s -o") + argv[2] + string("out ") + argv[2] + ("out.o");
+     system(run.c_str());
+  }
+  else {
+     system("nasm -f elf32 -g out.asm");
+    system("ld -m elf_i386 -s -o out out.o");
+  }
   
   return 0;
 }

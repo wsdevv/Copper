@@ -39,7 +39,6 @@ DataTransfer DataTransfer::next(string st) {
      this->c.last_index = this->c.current_index;
      //keeps on checking for that string until the end or break
      while (removeChr(this->c.temp_storage, " ", "") != st) {
-          
           if (this->c.current_index >= this->c.read_file.length()) {
              this->c.temp_storage = "";
              this->c.current_index = this->c.last_index;
@@ -67,7 +66,6 @@ if(this->transfer == true) {
     string fin = "";
 
     while(this->c.temp_storage != st) {
-        
         if (this->c.current_index > this->c.read_file.length() || this->c.current_index + st.length() > this->c.read_file.length()) {
              this->c.temp_storage  = "";
              this->c.current_index = this->c.last_index;
@@ -204,8 +202,9 @@ void Compile(
      .get_until(Parse_Rules::set_variable)
      .get_until(Parse_Rules::end_line)
      .empty([&names, &pointers, &main, &Current_Const_index, &Const_values, &parent, id, comp](vector<string> x) {
+     
         int loc = movVar(*pointers);
-        vector<string> val = parse(names,  pointers,  &Const_values, &Current_Const_index,  x[2]);
+        vector<string> val = parse(names,  pointers,  &Const_values, &Current_Const_index,  x[1]);
 
         //adds up the constants to make the length
         string length = "";
@@ -220,14 +219,14 @@ void Compile(
         }
         //pushes the variable
         main.push_back(createVar(loc,val[val.size()-1]));
-        names->push_back(removeChr(x[1], " ", ""));
+        names->push_back(removeChr(x[0], " ", ""));
         pointers->push_back(loc);
         parent->push_back(id);
 
         //length of the variable (if string)
         loc = movVar(*pointers);
         main.push_back(createVar(loc,length));
-        names->push_back(removeChr(x[1]+".length", " ", ""));
+        names->push_back(removeChr(x[0]+".length", " ", ""));
         pointers->push_back(loc);
         parent->push_back(id);
 

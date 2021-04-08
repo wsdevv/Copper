@@ -1,5 +1,7 @@
-
-chunk: sayhelloworld ~ {
-run: log ~ `hello%n`;
+chunk: ftestr      $ {
+  var: hello_world $= `[PROGRAM]: hello, world!%n`;
+  var: something     $= `This is a useless variable declaration! (WARNING, THERE ARE SOME FATAL BUGS WITH VARS)`;
+  run: log         $ hello_world;
 }
-run: sayhelloworld ~;
+var: JSON          $=
+run: ftestr        $ ; 

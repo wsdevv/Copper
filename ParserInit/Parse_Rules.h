@@ -9,7 +9,7 @@ namespace Parse_Rules {
     static string devide_var          = "$/";
 
     static string declare_function    = "chunk:";
-    static string set_function_params = "~";
+    static string set_function_params = "$";
     static string run_function        = "run:";
     static string start_chunk         = "{";
     static string end_chunk           = "}";
