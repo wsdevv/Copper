@@ -77,6 +77,7 @@ if(this->transfer == true) {
               
               this->c.temp_storage  += this->c.read_file[this->c.current_index +xn];
               xn += 1;
+             
             }
             //if not equal to token yet, reset temp storage and add the current index by one
             else  {
@@ -84,13 +85,20 @@ if(this->transfer == true) {
               fin += this->c.read_file[this->c.current_index];
               this->c.current_index += 1;
               xn = 0;
+              
             }
             if(this->c.temp_storage == st) {
                    break;
             }
             
+            
+        }
+        
+        if(this->c.temp_storage == st) {
+                   break;
         }
     }
+     
     this->c.current_index += st.length();
     this->c.data.push_back(fin);
     this->c.temp_storage  = "";
@@ -104,14 +112,22 @@ return (new DataTransfer())->init(((*this).c), false);
 //the actual compiler, found in Compiler.cpp, EDIT HERE IF YOU WANT TO CHANGE ANYTHING
 void Compile(
   string         name,
-  vector<string> *names, 
-  vector<int>    *pointers, 
-  vector<double> *parent, 
   vector<string> *start,
   string ff) {
     
+    //some of these lists might be not used
+    //constant names and values
     vector<string> Const_names;
     vector<string> Const_values;
+    //variable names/stack names
+    vector<string> names;
+    //location of the variables
+    vector<int>    pointers;
+    vector<double> parent;
+    //how much space the function will take up in the stack
+    int size = 0;
+
+
     int Current_Const_index = 0;
     double id = fRand(-9000.0, 9000.0);
 
@@ -128,15 +144,9 @@ void Compile(
     if (comp->current_index > comp->read_file.length()-2) {
         int f = 0;
         //deletes all of the variables
-        for (double p: *parent) {
-           if (p == id) {
-              main.push_back(deleteVar((*pointers)[f]));
-              
-              names->erase( names->begin()+f);
-              pointers->erase( std::remove( pointers->begin(), pointers->end(), (*pointers)[f] ), pointers->end() );
-              parent->erase( std::remove( parent->begin(), parent->end(), (*parent)[f] ), parent->end() );
-           }
-           f++;
+        for (int p=4;p<size+4;p+=4) {
+              main.push_back(deleteVar(p));
+
         }
         break;
      }
@@ -150,7 +160,7 @@ void Compile(
      .get_until(Parse_Rules::end_chunk)
      .empty([comp,name,&names, &pointers, &parent, &start](vector<string> x) {
         //compiles a different function
-       Compile(removeChr(x[0], " ",""), names, pointers, parent, start, x[2]);
+       Compile(removeChr(x[0], " ",""), start, x[2]);
      });
    
    //runs a function
@@ -162,7 +172,7 @@ void Compile(
         //tests if it is a preset function
         //TODO: PROBABLY NEED TO MAKE PRESET FUNCTIONS LOCATED SOMEWHERE ELSE
         if (removeChr(removeChr(x[0], " ", ""), "\t", "") == "log") {
-           vector<string> val = parse(names, pointers,  &Const_values, &Current_Const_index,  x[1]);
+           vector<string> val = parse(&names, &pointers,  &Const_values, &Current_Const_index,  x[1]);
          
             //adds up the constants to make the length
             string length = "";
@@ -201,10 +211,12 @@ void Compile(
      .next(Parse_Rules::declare_variable)
      .get_until(Parse_Rules::set_variable)
      .get_until(Parse_Rules::end_line)
-     .empty([&names, &pointers, &main, &Current_Const_index, &Const_values, &parent, id, comp](vector<string> x) {
-     
-        int loc = movVar(*pointers);
-        vector<string> val = parse(names,  pointers,  &Const_values, &Current_Const_index,  x[1]);
+     .empty([&names, &pointers, &main, &Current_Const_index, &Const_values, &parent, &size, id, comp](vector<string> x) {
+        //only can do strings for now...
+        //strings take up 2 stack slots because of size and value
+        size += 8;
+        int loc = movVar(pointers);
+        vector<string> val = parse(&names,  &pointers,  &Const_values, &Current_Const_index,  x[1]);
 
         //adds up the constants to make the length
         string length = "";
@@ -219,16 +231,16 @@ void Compile(
         }
         //pushes the variable
         main.push_back(createVar(loc,val[val.size()-1]));
-        names->push_back(removeChr(x[0], " ", ""));
-        pointers->push_back(loc);
-        parent->push_back(id);
+        names.push_back(removeChr(x[0], " ", ""));
+        pointers.push_back(loc);
+        parent.push_back(id);
 
         //length of the variable (if string)
-        loc = movVar(*pointers);
+        loc = movVar(pointers);
         main.push_back(createVar(loc,length));
-        names->push_back(removeChr(x[0]+".length", " ", ""));
-        pointers->push_back(loc);
-        parent->push_back(id);
+        names.push_back(removeChr(x[0]+".length", " ", ""));
+        pointers.push_back(loc);
+        parent.push_back(id);
 
      });
      
@@ -264,9 +276,26 @@ void Compile(
   }
   else {
   start->push_back("\nglobal _start");
+
+  //creates start stack frame
+  /*
+    push ebp        ; stores base pointer in stack to set it to default later
+    mov ebp, esp    ; moves base pointer to the bottom of the stack, where it can store new variables
+    sub esp, 4      ; subtract esp to store a new variable
+    mov [ebp], mval ; creates variable
+    ....            ; do stuff here
+    mov [ebp], 0    ; "deletes" or replaces variable after use
+    mov esp, ebp    ; moves esp to origional base pointer
+    pop ebp         ; restores origional base pointer
+  */
   start->push_back(
       "\n_start:\n"
+      "   push ebp\n"
+      "   mov  ebp, esp\n"
+      "   sub esp, "+to_string(size)+"\n"
       +st+
+      "   mov esp, ebp\n"
+      "   pop ebp\n"
       "   xor ebx,ebx\n"
       "   mov eax, 1\n"
       "   int 0x80\n" 
@@ -280,7 +309,12 @@ void Compile(
      if (name!= "!@auto_start@!") {
       start->push_back(
         "\n"+name+":\n"
+         "   push ebp\n"
+         "   mov  ebp, esp\n"
+         "   sub esp, "+to_string(size)+"\n"
          +st +
+         "   mov esp, ebp\n"
+         "   pop ebp\n"
          "   ret ;"
          +constst
       );

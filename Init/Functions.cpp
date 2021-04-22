@@ -16,26 +16,27 @@ string log(string msg, string len) {
 //creates a variable
 string createVar(int stackpos, string value) {
     return
-    "   mov DWORD [esp+"+to_string(stackpos)+"], "+value+";\n";
+    "   mov DWORD [ebp-"+to_string(stackpos)+"], "+value+";\n";
 }
 
 //deletes a variable
 string deleteVar(int stackpos) {
     return
-    "   mov DWORD [esp+"+to_string(stackpos)+"],"+"0;\n";
+    "   mov DWORD [ebp-"+to_string(stackpos)+"],"+"0;\n";
 }
 
 //formats a memory location
 string formatVar(int stackpos) {
-    return "[esp+"+to_string(stackpos)+"]";
+    return "[ebp-"+to_string(stackpos)+"]";
 }
 
 //gets the location of a variable
-int getVarLoc(vector<string> names, string name) {
-   for (int x = 0; x< names.size(); x++) {
-       if (names[x] == removeChr(name, " ", "")) {
-           return x;
-       }
+int getVarLoc(vector<string> names, string name) 
+{
+   for (int x=0;x<names.size();x++) {
+     if (removeChr(names[x], " ", "")==removeChr(name, " ", "")) {
+       return x;
+     }
    }
    return -1;
 }
@@ -113,9 +114,9 @@ vector<string> parse(vector<string>* names,vector<int>* locations, vector<string
         }
     }
 
-
     //adds/concatinates any variables
     if (removeChr(var, " ", "")!="") {
+        cout << (*locations)[getVarLoc(*names, var)] << "\n";
         finals += formatVar((*locations)[getVarLoc(*names, var)]);
         real_final.push_back(formatVar((*locations)[getVarLoc(*names, removeChr(var, ".length", "")+".length")]));
     }

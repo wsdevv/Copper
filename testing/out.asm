@@ -19,30 +19,58 @@ log:
 
     ret ;
 
-ftestr:
-   mov DWORD [esp+4], .Const.0;
-   mov DWORD [esp+8], .Const.0.length;
-   mov DWORD [esp+12], .Const.1;
-   mov DWORD [esp+16], .Const.1.length;
-   mov ecx,[esp+4];
-   mov edx,[esp+8];
+test66:
+   push ebp
+   mov  ebp, esp
+   sub esp, 8
+   mov DWORD [ebp-4], .Const.0;
+   mov DWORD [ebp-8], .Const.0.length;
+   mov ecx,[ebp-4];
+   mov edx,[ebp-8];
    call log       ;
    xor ecx, ecx   ;
    xor edx, edx   ;
-   mov DWORD [esp+4],0;
-   mov DWORD [esp+12],0;
-   mov DWORD [esp+16],0;
-   mov DWORD [esp+16],0;
+   mov DWORD [ebp-4],0;
+   mov DWORD [ebp-8],0;
+   mov esp, ebp
+   pop ebp
    ret ;
 .Const.0:
     DB "[PROGRAM]: hello, world!", 0xA, ""
 .Const.0.length equ $-.Const.0
-.Const.1:
-    DB "This is a useless variable declaration! (WARNING, THERE ARE SOME FATAL BUGS WITH VARS)"
-.Const.1.length equ $-.Const.1
 global _start
 _start:
-   call ftestr
+   push ebp
+   mov  ebp, esp
+   sub esp, 16
+   mov DWORD [ebp-4], .Const.0;
+   mov DWORD [ebp-8], .Const.0.length;
+   call test66
+   mov ecx,[ebp-4];
+   mov edx,[ebp-8];
+   call log       ;
+   xor ecx, ecx   ;
+   xor edx, edx   ;
+   mov DWORD [ebp-12], .Const.1;
+   mov DWORD [ebp-16], .Const.1.length;
+   mov ecx,[ebp-12];
+   mov edx,[ebp-16];
+   call log       ;
+   xor ecx, ecx   ;
+   xor edx, edx   ;
+   mov DWORD [ebp-4],0;
+   mov DWORD [ebp-8],0;
+   mov DWORD [ebp-12],0;
+   mov DWORD [ebp-16],0;
+   mov esp, ebp
+   pop ebp
    xor ebx,ebx
    mov eax, 1
    int 0x80
+
+.Const.0:
+    DB "[PROGRAM]: test variable 2", 0xA, ""
+.Const.0.length equ $-.Const.0
+.Const.1:
+    DB "[PROGRAM]: test3", 0xA, ""
+.Const.1.length equ $-.Const.1

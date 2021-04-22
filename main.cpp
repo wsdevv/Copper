@@ -15,7 +15,7 @@
  * c. The creator makes a contribution and use wiki
  * d. The creator has motivation
  * 
- * The compiler is not that efficient, but it works, haha!
+ * The compiler is not that efficient, but it works, haha! (I laugh to much)
  * Thank you for visiting! I suggest you visit again when this project progresses! 
 */
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
   }
 
   //just in case line does not include ";" add ";" there
-   if (removeChr(ff, " ", "")[removeChr(ff, " ", "").length()-1] != ';' && removeChr(ff, " ", "")[removeChr(ff, " ", "").length()-1] != '}') {
+   if (removeChr(ff, " ", "")[removeChr(ff, " ", "").length()-1] != ';' && removeChr(ff, " ", "")[removeChr(ff, " ", "").length()-1] != '}' && removeChr(ff, " ", "")[removeChr(ff, " ", "").length()-1] != '{') {
       ff+=";";
    }
  
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
   vector<string> main;
   vector<string> functions;
 
-  Compile("!@auto_start@!", &names, &pointers, &parent, &main, ff);
+  Compile("!@auto_start@!", &main, ff);
 
  
   //for the global start funcion

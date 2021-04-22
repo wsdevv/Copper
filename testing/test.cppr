@@ -1,7 +1,9 @@
-chunk: ftestr      $ {
-  var: hello_world $= `[PROGRAM]: hello, world!%n`;
-  var: something     $= `This is a useless variable declaration! (WARNING, THERE ARE SOME FATAL BUGS WITH VARS)`;
-  run: log         $ hello_world;
+chunk: test66      $ unimplemented=`oof dat sad`, hi=`yes it is` {
+  var: hello_world $= `[PROGRAM]: hello, world!%n`
+  run: log         $ hello_world
 }
-var: JSON          $=
-run: ftestr        $ ; 
+var: somethingcool $= `[PROGRAM]: test variable 2%n`
+run: test66        $ 
+run: log           $ somethingcool
+var: umm           $= `[PROGRAM]: test3%n`
+run: log           $ umm
