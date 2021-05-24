@@ -42,26 +42,12 @@ global _start
 _start:
    push ebp
    mov  ebp, esp
-   sub esp, 16
+   sub esp, 8
    mov DWORD [ebp-4], .Const.0;
    mov DWORD [ebp-8], .Const.0.length;
    call test66
-   mov ecx,[ebp-4];
-   mov edx,[ebp-8];
-   call log       ;
-   xor ecx, ecx   ;
-   xor edx, edx   ;
-   mov DWORD [ebp-12], .Const.1;
-   mov DWORD [ebp-16], .Const.1.length;
-   mov ecx,[ebp-12];
-   mov edx,[ebp-16];
-   call log       ;
-   xor ecx, ecx   ;
-   xor edx, edx   ;
    mov DWORD [ebp-4],0;
    mov DWORD [ebp-8],0;
-   mov DWORD [ebp-12],0;
-   mov DWORD [ebp-16],0;
    mov esp, ebp
    pop ebp
    xor ebx,ebx
@@ -71,6 +57,3 @@ _start:
 .Const.0:
     DB "[PROGRAM]: test variable 2", 0xA, ""
 .Const.0.length equ $-.Const.0
-.Const.1:
-    DB "[PROGRAM]: test3", 0xA, ""
-.Const.1.length equ $-.Const.1

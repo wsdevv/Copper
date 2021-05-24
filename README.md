@@ -2,6 +2,9 @@
 # Copper
 An Open source compiled programming language, In development.
 
+NOTICE:
+- New versions will be coming out slowly due to the developer having a lot of other tasks to do outside of this project.
+
 # Goals
 Copper is an general-purpose OOP language.
 
@@ -40,7 +43,7 @@ I am still kind of getting into assembly, so the progress is slow
  - Functions and variables will do weird stuff if their names are four characters.
 
 # Contributions.
-Not excepting contributions yet :(
+Not accepting contributions yet :(
 
 # Code Organization
 The code in Coppers compiler is not organized as I would like it to be yet. I will be changing it soon.

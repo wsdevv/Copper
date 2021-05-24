@@ -1,9 +1,6 @@
-chunk: test66      $ unimplemented=`oof dat sad`, hi=`yes it is` {
+chunk: test66      $ no=`no` {
   var: hello_world $= `[PROGRAM]: hello, world!%n`
   run: log         $ hello_world
 }
 var: somethingcool $= `[PROGRAM]: test variable 2%n`
 run: test66        $ 
-run: log           $ somethingcool
-var: umm           $= `[PROGRAM]: test3%n`
-run: log           $ umm

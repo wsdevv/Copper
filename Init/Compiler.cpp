@@ -205,7 +205,7 @@ void Compile(
      });
 
      
-      
+     //TODO NOW: working on interagers
      //gets a varaible
      comp = comp->Start_Parse()
      .next(Parse_Rules::declare_variable)
@@ -214,6 +214,7 @@ void Compile(
      .empty([&names, &pointers, &main, &Current_Const_index, &Const_values, &parent, &size, id, comp](vector<string> x) {
         //only can do strings for now...
         //strings take up 2 stack slots because of size and value
+      
         size += 8;
         int loc = movVar(pointers);
         vector<string> val = parse(&names,  &pointers,  &Const_values, &Current_Const_index,  x[1]);
@@ -251,6 +252,7 @@ void Compile(
      .empty([](vector<string> x){
         cout << "found: " << x[0] << "\n";
      });
+     
  
   }
   //for the global start func
