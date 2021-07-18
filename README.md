@@ -28,10 +28,10 @@ Other goals
 
 # Progress
 I am still kind of getting into assembly, so the progress is slow
-- [] simple variables
-- [] Logging to the console
-- [] string/variable concatination
-- [] simple functions
+- [ ] simple variables
+- [ ] Logging to the console
+- [ ] string/variable concatination
+- [ ] simple functions
 - [ ] functions in functions
 - [ ] OpenGL libs
 - [ ] OpenAL libs
