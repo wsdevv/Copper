@@ -3,7 +3,7 @@
 An Open source compiled programming language, In development.
 
 NOTICE:
-- New versions will be coming out slowly due to the developer having a lot of other tasks to do outside of this project.
+- Copper is being reprogrammed in a different language due to problems I could not figure out, this will hopefully fix some of these problems and make copper more clean
 
 # Goals
 Copper is an general-purpose OOP language.
@@ -15,7 +15,7 @@ Example:
 
 Change the normal declaration of a variable in copper:
 
-```var: myvar $= `hello, world!` ```
+```var myvar = `hello, world!` ```
 
 To a python-like syntax:
 
@@ -28,10 +28,10 @@ Other goals
 
 # Progress
 I am still kind of getting into assembly, so the progress is slow
-- [X] simple variables
-- [X] Logging to the console
-- [ ] string/variable concatination
-- [X] simple functions
+- [] simple variables
+- [] Logging to the console
+- [] string/variable concatination
+- [] simple functions
 - [ ] functions in functions
 - [ ] OpenGL libs
 - [ ] OpenAL libs
@@ -39,14 +39,8 @@ I am still kind of getting into assembly, so the progress is slow
 
 (More will probably be added to the checklist later)
 
-# Problems
- - Functions and variables will do weird stuff if their names are four characters.
-
 # Contributions.
 Not accepting contributions yet :(
-
-# Code Organization
-The code in Coppers compiler is not organized as I would like it to be yet. I will be changing it soon.
 
 # Nasm
 This programming language is not distributed with nasm yet, which it uses to compile to. You'll have to download it yourself currently.

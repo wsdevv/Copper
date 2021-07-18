@@ -1,6 +1,0 @@
-chunk: test66      $ no=`no` {
-  var: hello_world $= `[PROGRAM]: hello, world!%n`
-  run: log         $ hello_world
-}
-var: somethingcool $= `[PROGRAM]: test variable 2%n`
-run: test66        $ 
