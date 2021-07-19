@@ -50,11 +50,11 @@ func (c Continue_interpretation) store_with_keyword_check(end_reading_at []strin
 
 				//if end_reading_at is in the line then say it is found and stop the loop
 				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
-				if end_reading_at[a] == string(i.line[i.currentIndex:len(end_reading_at[a])]) {
-					found = true
-					break
-				} else if 1+i.currentIndex+len(end_reading_at[a]) > len(i.line) {
+				if 1+i.currentIndex+len(end_reading_at[a]) > len(i.line) {
 					i.currentIndex = i.lastIndex
+					break
+				} else if end_reading_at[a] == string(i.line[i.currentIndex:i.currentIndex+len(end_reading_at[a])]) {
+					found = true
 					break
 				} else {
 					result.WriteString(string(i.line[i.currentIndex]))
@@ -93,16 +93,19 @@ func (c Continue_interpretation) keyword_check(keyword []string) Continue_interp
 		i.lastIndex = i.currentIndex
 
 		for a := 0; a < len(keyword); a++ {
+			fmt.Println(keyword[a])
 			for true {
 
 				//if end_reading_at is in the line then say it is found and stop the loop
 				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
-				if keyword[a] == string(i.line[i.currentIndex:len(keyword[a])]) {
-					found = true
-					break
-				} else if 1+i.currentIndex+len(keyword[a]) > len(i.line) {
+				if i.currentIndex+len(keyword[a]) > len(i.line) {
 					i.currentIndex = i.lastIndex
 					break
+				} else if keyword[a] == string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]) {
+					found = true
+					break
+				} else {
+					i.currentIndex += 1
 				}
 			}
 			if found == true {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -10,12 +11,15 @@ func main() {
 	if err != nil {
 		return
 	}
+
 	read := string(str)
 	intr := startInterpreter(read)
 	synt := defaultSyntax()
-	for true {
-		intr.keyword_check(synt.create_variable).store_with_keyword_check(synt.set_variable).store_with_keyword_check(synt.end_line).end(func(params []string) {
 
+	for true {
+		//checks for a variable
+		intr.keyword_check(synt.create_variable).store_with_keyword_check(synt.set_variable).store_with_keyword_check(synt.end_line).end(func(params []string) {
+			fmt.Println("ooh yeahh")
 		})
 	}
 }
