@@ -19,12 +19,22 @@ type Continue_interpretation struct {
 }
 
 //starts a interpreter by converting a new interpreter into Continue_interpretation struct
-func startInterpreter(text string) Continue_interpretation {
+func interpreterInit(text string) Continue_interpretation {
 	i := Interpreter{
 		line:         text,
 		currentIndex: 0,
 		lastIndex:    0,
 	}
+	return Continue_interpretation{
+		confirm: true,
+		self:    i,
+	}
+}
+
+//starts interperating and sets the last index to the current index in case the line is incorrect
+func (c Continue_interpretation) start() Continue_interpretation {
+	i := c.self
+	i.lastIndex = i.currentIndex
 	return Continue_interpretation{
 		confirm: true,
 		self:    i,
@@ -39,24 +49,24 @@ func (c Continue_interpretation) store_with_keyword_check(end_reading_at []strin
 	//tests for string(s)
 	//multipule keys can do the same thing in the default syntax for this programming language
 	//ex $ and func both create a function, $ is just the shortened version
+	i := c.self
+	found := false
 	if c.confirm == true {
-		//clones c's interpreter then Continues
-		i := c.self
-		found := false
-		i.lastIndex = i.currentIndex
+
 		var result strings.Builder
 		for a := 0; a < len(end_reading_at); a++ {
 			for true {
 
 				//if end_reading_at is in the line then say it is found and stop the loop
 				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
-				if 1+i.currentIndex+len(end_reading_at[a]) > len(i.line) {
-					i.currentIndex = i.lastIndex
+				if i.currentIndex+len(end_reading_at[a]) > len(i.line) {
 					break
 				} else if end_reading_at[a] == string(i.line[i.currentIndex:i.currentIndex+len(end_reading_at[a])]) {
 					found = true
 					break
 				} else {
+					fmt.Println("looking for: ", end_reading_at[a], " found: ", string(i.line[i.currentIndex:i.currentIndex+len(end_reading_at[a])]), "len: ", len(string(i.line[i.currentIndex:i.currentIndex+len(end_reading_at[a])])), " loc: ", i.currentIndex)
+
 					result.WriteString(string(i.line[i.currentIndex]))
 					i.currentIndex += 1
 				}
@@ -66,7 +76,6 @@ func (c Continue_interpretation) store_with_keyword_check(end_reading_at []strin
 			}
 		}
 		//adds the collected token to the token list
-		fmt.Println(result.String())
 		i.elements = append(i.elements, result.String())
 
 		//creates a new Continue_interpretation with the edited values
@@ -78,39 +87,97 @@ func (c Continue_interpretation) store_with_keyword_check(end_reading_at []strin
 
 	return Continue_interpretation{
 		confirm: false,
+		self:    i,
 	}
 }
 
-//basically the same as store_with_keyword_check but does not store a value within the value list
+//Checks for a keyword until finds it
 func (c Continue_interpretation) keyword_check(keyword []string) Continue_interpretation {
 	//tests for string(s)
 	//multipule keys can do the same thing in the default syntax for this programming language
 	//ex $ and func both create a function, $ is just the shortened version
+	i := c.self
+	found := false
 	if c.confirm == true {
-		//clones c's interpreter then Continues
-		i := c.self
-		found := false
-		i.lastIndex = i.currentIndex
 
 		for a := 0; a < len(keyword); a++ {
-			fmt.Println(keyword[a])
+
 			for true {
 
 				//if end_reading_at is in the line then say it is found and stop the loop
 				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
 				if i.currentIndex+len(keyword[a]) > len(i.line) {
-					i.currentIndex = i.lastIndex
 					break
 				} else if keyword[a] == string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]) {
 					found = true
 					break
 				} else {
+					//fmt.Println("kw looking for: ", keyword[a], " found: ", string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]), "len: ", len(string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])])))
+					i.currentIndex += 1
+				}
+			}
+			if found == true {
+
+				break
+			}
+		}
+
+		fmt.Println(i.line[i.currentIndex])
+		//creates a new Continue_interpretation with the edited values
+		return Continue_interpretation{
+			confirm: found,
+			self:    i,
+		}
+	}
+
+	return Continue_interpretation{
+		confirm: false,
+		self:    i,
+	}
+}
+
+//stops checking for keyword if the interpereter finds a certain string
+func (c Continue_interpretation) bounded_keyword_check(keyword []string, stop_checking_at []string) Continue_interpretation {
+	//tests for string(s)
+	//multipule keys can do the same thing in the default syntax for this programming language
+	//ex $ and func both create a function, $ is just the shortened version
+	i := c.self
+	found := false
+	if c.confirm == true {
+
+		for a := 0; a < len(keyword); a++ {
+			for true {
+				//stopper right here
+				for x := 0; x < len(stop_checking_at); x += 1 {
+
+					if string(i.line[i.currentIndex:i.currentIndex+len(stop_checking_at[x])]) == stop_checking_at[x] {
+						fmt.Println(i.line[i.currentIndex : i.currentIndex+len(stop_checking_at[x])])
+						return Continue_interpretation{
+							confirm: false,
+							self:    i,
+						}
+
+					}
+				}
+
+				//if end_reading_at is in the line then say it is found and stop the loop
+				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
+				if i.currentIndex+len(keyword[a]) > len(i.line) {
+					fmt.Println("oke2")
+					break
+				} else if keyword[a] == string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]) {
+					fmt.Println("oke")
+					found = true
+					break
+				} else {
+					//fmt.Println("kw looking for: ", keyword[a], " found: ", string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]), "indx ", i.currentIndex)
 					i.currentIndex += 1
 				}
 			}
 			if found == true {
 				break
 			}
+
 		}
 
 		//creates a new Continue_interpretation with the edited values
@@ -122,12 +189,43 @@ func (c Continue_interpretation) keyword_check(keyword []string) Continue_interp
 
 	return Continue_interpretation{
 		confirm: false,
+		self:    i,
 	}
 }
 
-//ends the interpreter/parser/whatever
-func (c Continue_interpretation) end(supply func(params []string)) {
+//ends the interpreter/parser/whatever and executes a function
+func (c Continue_interpretation) end(supply func(params []string)) Continue_interpretation {
+	i := c.self
 	if c.confirm == true {
+
+		i.currentIndex += 1
+		fmt.Println(string(i.line[i.currentIndex]))
 		supply(c.self.elements)
+	} else {
+		i.currentIndex = i.lastIndex
 	}
+
+	//fmt.Println(string(i.line[i.currentIndex]))
+	//fmt.Println(i.currentIndex)
+	return Continue_interpretation{
+		confirm: true,
+		self:    i,
+	}
+}
+
+type block struct {
+	name      string
+	ref       string
+	execute   string
+	constants []constant
+	variables []variable
+}
+type variable struct {
+	name  string
+	ref   string
+	value constant
+}
+type constant struct {
+	name string
+	data string
 }

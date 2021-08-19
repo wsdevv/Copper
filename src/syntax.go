@@ -23,20 +23,21 @@ type syntax struct {
 
 func defaultSyntax() syntax {
 	return syntax{
-		end_line:                    []string{"\n", ";"},
-		create_variable:             []string{"!", "var"},
+		//IMPORTANT: GET "\n" to work!!!!!
+		end_line:                    []string{";", "{", "}"},
+		create_variable:             []string{"!", "var "},
 		create_pointer:              []string{"@"},
 		get_pointer:                 []string{"^"},
-		create_function:             []string{"$", "func"},
+		create_function:             []string{"$", "fnc "},
 		parameters_start:            []string{"("},
 		parameters_end:              []string{")"},
-		chunk_start:                 []string{"{", "start"},
-		chunk_end:                   []string{"}", "end"},
+		chunk_start:                 []string{"{", "start "},
+		chunk_end:                   []string{"}", "end "},
 		string_start:                []string{"\"", "'"},
 		string_end:                  []string{"\"", "'"},
 		array_start:                 []string{"["},
 		array_end:                   []string{"]"},
-		create_import:               []string{"&", "import"},
+		create_import:               []string{"&", "import "},
 		change_rules:                []string{"#"},
 		set_variable:                []string{"="},
 		one_character_no_space_rule: true,
