@@ -1,5 +1,7 @@
 package main
 
+
+// THIS IS JUST THE FUNCTIONS FOR PARSING THE FILE, EVERYTHING TO COMPILE THE CODE IS LOCATED IN COMPILER.GO OR MAIN.GO
 import (
 	"fmt"
 	"strings"
@@ -51,7 +53,7 @@ func (c Continue_interpretation) store_with_keyword_check(end_reading_at []strin
 	//ex $ and func both create a function, $ is just the shortened version
 	i := c.self
 	found := false
-	if c.confirm == true {
+	if c.confirm == true && i.currentIndex < len(i.line) {
 
 		var result strings.Builder
 		for a := 0; a < len(end_reading_at); a++ {
@@ -98,7 +100,7 @@ func (c Continue_interpretation) keyword_check(keyword []string) Continue_interp
 	//ex $ and func both create a function, $ is just the shortened version
 	i := c.self
 	found := false
-	if c.confirm == true {
+	if c.confirm == true && i.currentIndex < len(i.line) {
 
 		for a := 0; a < len(keyword); a++ {
 
@@ -143,7 +145,8 @@ func (c Continue_interpretation) bounded_keyword_check(keyword []string, stop_ch
 	//ex $ and func both create a function, $ is just the shortened version
 	i := c.self
 	found := false
-	if c.confirm == true {
+	fmt.Println(c.confirm)
+	if c.confirm == true && i.currentIndex+1 < len(i.line) {
 
 		for a := 0; a < len(keyword); a++ {
 			for true {
@@ -163,10 +166,8 @@ func (c Continue_interpretation) bounded_keyword_check(keyword []string, stop_ch
 				//if end_reading_at is in the line then say it is found and stop the loop
 				//If it is not found before the token check has ended, break and set the currendIndex to lastIndex
 				if i.currentIndex+len(keyword[a]) > len(i.line) {
-					fmt.Println("oke2")
 					break
 				} else if keyword[a] == string(i.line[i.currentIndex:i.currentIndex+len(keyword[a])]) {
-					fmt.Println("oke")
 					found = true
 					break
 				} else {
@@ -196,36 +197,26 @@ func (c Continue_interpretation) bounded_keyword_check(keyword []string, stop_ch
 //ends the interpreter/parser/whatever and executes a function
 func (c Continue_interpretation) end(supply func(params []string)) Continue_interpretation {
 	i := c.self
+	continu := true
+
 	if c.confirm == true {
 
 		i.currentIndex += 1
 		fmt.Println(string(i.line[i.currentIndex]))
-		supply(c.self.elements)
+    supply(c.self.elements)
 	} else {
 		i.currentIndex = i.lastIndex
+
 	}
 
+	if i.currentIndex >= len(i.line) {
+
+		continu = false
+	}
 	//fmt.Println(string(i.line[i.currentIndex]))
 	//fmt.Println(i.currentIndex)
 	return Continue_interpretation{
-		confirm: true,
+		confirm: continu,
 		self:    i,
 	}
-}
-
-type block struct {
-	name      string
-	ref       string
-	execute   string
-	constants []constant
-	variables []variable
-}
-type variable struct {
-	name  string
-	ref   string
-	value constant
-}
-type constant struct {
-	name string
-	data string
 }

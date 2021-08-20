@@ -12,8 +12,7 @@ type syntax struct {
 	parameters_end              []string
 	chunk_start                 []string
 	chunk_end                   []string
-	string_start                []string
-	string_end                  []string
+	declare_string              []string
 	array_start                 []string
 	array_end                   []string
 	create_import               []string
@@ -33,8 +32,7 @@ func defaultSyntax() syntax {
 		parameters_end:              []string{")"},
 		chunk_start:                 []string{"{", "start "},
 		chunk_end:                   []string{"}", "end "},
-		string_start:                []string{"\"", "'"},
-		string_end:                  []string{"\"", "'"},
+		declare_string:              []string{"\"", "'"},
 		array_start:                 []string{"["},
 		array_end:                   []string{"]"},
 		create_import:               []string{"&", "import "},

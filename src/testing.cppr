@@ -1,7 +1,2 @@
-!tst=`flip`;
-!tst22
-=
-`nou`;
-$copper_is_da_best () {
-
-}
+!tst="hello";
+!tstr="no u";
