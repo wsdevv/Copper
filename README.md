@@ -1,19 +1,19 @@
 **********************************
-# Copper
+# PaintL
 An Open source compiled programming language, In development.
 
 NOTICE:
-- Copper is in early development, pardon me if files and programming are messy. Some things may also not work.
+- PaintL is in early development, pardon me if files and programming are messy. Some things may also not work.
 
 # Goals
-Copper is an general-purpose OOP language.
+PaintL is an general-purpose OOP language.
 
-Coppers main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
+PaintLs main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
 language looks without having to make their own. You will not have to download the source code to make changes to the language.
 
 Example:
 
-Change the normal declaration of a variable in copper:
+Change the normal declaration of a variable in PaintL:
 
 ```var myvar = "hello, world!" ```
 
