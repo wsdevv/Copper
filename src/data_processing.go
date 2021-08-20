@@ -7,7 +7,6 @@ import (
 )
 
 //This file holds the methods to store variables and functions
-
 func create_data_name(length int) string {
 	chars := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
 	final := ""
