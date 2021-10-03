@@ -3,6 +3,8 @@ package main
 import (
 	"math"
 	"math/rand"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -18,19 +20,21 @@ func create_data_name(length int) string {
 }
 
 type block struct {
-	name              string
-	ref               string
-	execute           string
-	execute_begenning string
-	execute_end       string
-	constants         []constant
-	variables         []variable
+	name      string
+	ref       string
+	memory    int
+	id        string
+	execute   []string
+	constants []constant
+	variables []variable
 }
 type variable struct {
-	name  string
-	ref   string
-	typ   string
-	value string
+	name     string
+	ref      string
+	typ      string
+	value    string
+	location int
+	id       int
 }
 type constant struct {
 	name string
@@ -41,34 +45,32 @@ type constant struct {
 func create_block(name string, keep_name bool) block {
 	if keep_name {
 		return block{
-			name:              name,
-			ref:               name,
-			execute_begenning: "\n   push ebp\n   mov esp, ebp\n",
-			execute:           "",
-			execute_end:       "\n   mov ebp, esp\n   pop ebp\n   ret ;",
+			name: name,
+			ref:  name,
 		}
 	}
 	return block{
-		name:        create_data_name(int(math.Abs(float64((int64(rand.Intn(16))*time.Now().UnixNano()/int64(1000000))%16)) + 5)),
-		ref:         name,
-		execute:     "   push ebp\n   mov esp, ebp\n",
-		execute_end: "\n   mov ebp, esp\n   pop ebp\n   ret ;",
+		name: create_data_name(int(math.Abs(float64((int64(rand.Intn(16))*time.Now().UnixNano()/int64(1000000))%16)) + 5)),
+		ref:  name,
 	}
 }
-func create_variable(name string, typ string, value string, keep_name bool) variable {
+func create_variable(name string, typ string, value string, keep_name bool, location int) variable {
 	if keep_name {
 		return variable{
-			name:  name,
-			ref:   name,
-			typ:   typ,
-			value: value,
+			name:     name,
+			ref:      name,
+			typ:      typ,
+			value:    value,
+			location: location,
 		}
 	}
 	return variable{
-		name:  name,
-		ref:   create_data_name(int(math.Abs(float64((int64(rand.Intn(16))*time.Now().UnixNano()/int64(1000000))%16)) + 5)),
-		typ:   typ,
-		value: value,
+		name:     name,
+		ref:      create_data_name(int(math.Abs(float64((int64(rand.Intn(16))*time.Now().UnixNano()/int64(1000000))%16)) + 5)),
+		id:       int((int64(int64(rand.Intn(1024)) * time.Now().UnixNano() / int64(1000000)))),
+		typ:      typ,
+		value:    value,
+		location: location,
 	}
 }
 
@@ -86,6 +88,12 @@ func create_constant_n(name string, data string, col bool) constant {
 		data: data,
 		col:  col,
 	}
+}
+
+//returns as compiled paintL
+func (v variable) compile_data() string {
+	defaults := get_paintlc_defaults()
+	return strings.Join([]string{string(rune(defaults.x)), v.ref, string(rune(defaults.var_name)), strconv.Itoa(v.location), string(rune(defaults.variable_mem_loc)), v.value, string(rune(defaults.variable_value)), string(rune(defaults.variable))}, "")
 }
 
 func process_value(value string, synt syntax) ([]constant, string) {
