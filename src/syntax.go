@@ -1,6 +1,9 @@
 package main
 
-//initializes the syntax rules
+/*
+ * FILE: syntax.go
+ * PURPOSE: Holds the syntax rules for the language, will probably be removed later in favor of data-driven JSON-based rules
+ */
 type syntax struct {
 	end_line                    []string
 	create_variable             []string
@@ -22,6 +25,7 @@ type syntax struct {
 
 func defaultSyntax() syntax {
 	return syntax{
+
 		//IMPORTANT: GET "\n" to work!!!!!
 		end_line:                    []string{";", "{", "}"},
 		create_variable:             []string{"!", "var "},

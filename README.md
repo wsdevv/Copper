@@ -1,12 +1,18 @@
 **********************************
-# PaintL
-An Open source compiled programming language, In development.
+
+# Status 
+- Lexer is being rewritten, goals are being changed, and some files are currently empty. I am Trying to start the project back up, currently uncompilable and unusable.
+- Changed back to origional name (I don't know why I changed it anyway)
+
+# Copper
+A Open source compiled programming language, In development.
+(Note: I failed to specify this earlier, but this is a personal project, and there are no guarentees  that it will ever be completed)
 
 NOTICE:
-- PaintL is in early development, pardon me if files and programming are messy. Some things may also not work.
+- Copper is in early development, pardon me if files and programming are messy. Some operations may also not work.
 
 # Goals
-PaintL is an general-purpose OOP language.
+Copper is an general-purpose OOP language.
 
 PaintLs main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
 language looks without having to make their own. You will not have to download the source code to make changes to the language.
@@ -22,13 +28,14 @@ To a python-like syntax:
 ```myvar = "hello, world!"```
 
 Other goals
-- make the programming language easy.
-- make the programming language fast
-- make the programming language secure
-- if possible, add cross platform gp gpu scripting
+- make the programming language easy with a low learning curve.
+- make the programming language fast. 
+- make the programming language secure.
+- make a transpiler: projects are transpiled to and from a global standard syntax so everyone can understand the base code.
 
 # Progress
-I am still kind of getting into assembly, so the progress is slow
+I am still kind of getting into assembly, so the progress is slow. 
+Keep in mind 
 - [ ] simple variables
 - [ ] Logging to the console
 - [ ] string/variable concatination
@@ -42,6 +49,3 @@ I am still kind of getting into assembly, so the progress is slow
 
 # Contributions.
 Not accepting contributions yet :(
-
-# Nasm
-This programming language is not distributed with nasm yet, which it uses to compile to. You'll have to download it yourself currently.
