@@ -1,0 +1,45 @@
+
+{
+
+	"DESCRIPTION":  "this file is the base syntax file for a cppr application",
+	"@LOADSCRIPT": "main.lua",
+	
+	"constants": {
+		"variable":          "var",
+		"function":          "func",
+		"set-variable-type": ":",
+,		"set-variable":      "=",
+		"types": [
+		"i8",
+		"i16",
+		"i32",
+		"i64",
+		"i128",
+		"i256",
+		
+		"u8",
+		"u16",
+		"u32",
+		"u64",
+		"u128",
+		"u256",
+	   ],
+	}
+
+	"${constants:variable}": {
+		"@TYPE": "next", 
+		
+		"${constants:set-variable-type}": {
+			"@TYPE": "log",
+			"@VALID": "${storage:types}",
+			"@JUMP": "var:="
+		}
+		
+		"${constants:set-variable}": {
+			"@TYPE": "log",
+			"@RETURN": "variable()"
+		}
+		
+	}
+	
+}
