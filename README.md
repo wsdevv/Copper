@@ -36,7 +36,7 @@ Other goals
 # Progress/Roadmap
 
 Lexer features completed (may be added to as I learn):
-- [ x ] Basic lexing functions
+- [x] Basic lexing functions
 - [ ] Parralell lexing (in progress)
 
 MALASM
