@@ -33,19 +33,62 @@ Other goals
 - make the programming language secure.
 - make a transpiler: projects are transpiled to and from a global standard syntax so everyone can understand the base code.
 
-# Progress
-I am still kind of getting into assembly, so the progress is slow. 
-Keep in mind 
-- [ ] simple variables
-- [ ] Logging to the console
+# Progress/Roadmap
+
+Lexer features completed (may be added to as I learn):
+- [ x ] Basic lexing functions
+- [ ] Parralell lexing (in progress)
+
+MALASM
+- [ ] ... (placeholder, more will be added. Will be elaborated on, may be removed later.)
+
+Compiler/general programming language features completed (may be added to and rearranged as I learn and develop the language): 
+
+- [ ] declaring and initializing mutable variables
+- [ ] declaring and initializing constant/immmutable variables
+- [ ] referencing variables
+- [ ] declaring functions
+- [ ] Logging to the console (basic std library functions)
+- [ ] (Test) Hello world
+- [ ] variable operations
+- [ ] simple error handling
 - [ ] string/variable concatination
-- [ ] simple functions
-- [ ] functions in functions
+- [ ] function return values
+- [ ] calling functions
+- [ ] (Test) Calculator Command line
+- [ ] declaring classes
+- [ ] class constructors
+- [ ] instantiating classes through the new keyword
+- [ ] declaring instance feilds/class feilds
+- [ ] initializing instance feilds/class feilds
+- [ ] declaring methods in a class
+- [ ] private keyword
+- [ ] public keyword
+- [ ] static keyword
+- [ ] function/method overloading
+- [ ] anonymous functions
+- [ ] enumerations
+- [ ] Interfaces
+- [ ] Superclasses
+- [ ] Finish the std library
 - [ ] OpenGL libs
 - [ ] OpenAL libs
 - [ ] Simple networking libs
+- [ ] ... (placeholder, more will be added)
 
-(More will probably be added to the checklist later)
+Customization features completed (may be added to and rearranged as I learn and develop the language):
+
+- [ ] programmers able to change variable declaration syntax
+- [ ] programmers able to change function declaration syntax
+- [ ] programmers able to change class declaration syntax
+- [ ] programmers able to change keyword syntax
+- [ ] ... (placeholder, more will be added)
+
+The Copper Transpiler 
+- [ ] ... (placeholder, more will be added)
+
+
 
 # Contributions.
 Not accepting contributions yet :(
+Taking suggestions and feedback though!
