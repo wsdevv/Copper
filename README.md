@@ -55,7 +55,7 @@ Compiler/general programming language features completed (may be added to and re
 - [ ] string/variable concatination
 - [ ] function return values
 - [ ] calling functions
-- [ ] (Test) Calculator Command line
+- [ ] (Test) Calculator Command line application
 - [ ] declaring classes
 - [ ] class constructors
 - [ ] instantiating classes through the new keyword
