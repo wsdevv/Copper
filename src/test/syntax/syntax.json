@@ -2,7 +2,9 @@
 {
 
 	"DESCRIPTION":  "this file is the base syntax file for a cppr application",
-	"@LOADSCRIPT": "main.lua",
+	"@LOADSCRIPTS": [
+		"main.lua"
+	],
 	
 	"constants": {
 		"variable":          "var",
