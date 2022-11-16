@@ -10,6 +10,8 @@ import "os"
 
 //import "github.com/go-errors/errors"
 
+
+// Log types used to log information used in the compilation phase
 const (
 	LogTypeNone             = 0
 	LogTypeAll              = 1
@@ -20,14 +22,15 @@ const (
 
 /*
 used in testing
+TODO: fix many notable inconsitencies with the paralell token checker
 */
 func main() {
-	lexer := new_lexer("var no = 0; func hi(boi, gurl) {mmm}")
+	lexer := new_lexer("var no = 0; func hi() {mmm}")
 
 	lexer = lexer.add_rule(func(lex Lexer) Lexer {
 		lex = lex.start().next_string("var", LogTypeSeperate).next_string("=", LogTypeRemoveWhitespace+LogTypeNoSelf).next_string(";", LogTypeNoSelf)
 
-		fmt.Println(string(lex.program[lex.position-1]))
+		fmt.Println(lex)
 		lex = lex.end()
 		return lex
 	})
@@ -35,7 +38,7 @@ func main() {
 	lexer = lexer.add_rule(func(lex Lexer) Lexer {
 		lex = lex.start().next_string("func", LogTypeSeperate).next_string("(", LogTypeRemoveWhitespace+LogTypeNoSelf).next_string(")", LogTypeNoSelf).next_string("{", LogTypeNoSelf).next_string("}", LogTypeNoSelf)
 
-		fmt.Println(string(lex.program[lex.position-1]))
+		fmt.Println(lex)
 		lex = lex.end()
 		return lex
 	})
@@ -58,6 +61,17 @@ func main() {
  * move:     the next-line position
  * program:  the code to be compiled
  * continue_lexer: tells to continue a function chain if in progress
+ *
+ * (only used if one uses parallel token checking)
+ * rules: contain lexer rules 
+ * finish: used for rule handling, if all checks have been issued and have not been successfull, then this will allow the return of an error
+ * success: states if one rule has succfully been completed and accounted for
+ * check:   starts the actual lexing and parallel token checking on a line
+ *
+ * (error handling)
+ * start_called: only allows end to be called after start has been called
+ * end_called: only allows start to be called after end has been called (except on the first call)
+
  */
 type Lexer struct {
 
@@ -109,7 +123,9 @@ func new_lexer(program string) Lexer {
 }
 
 /*
- *
+ * Lexer method
+ * init
+ * Purpose: initializes and starts coroutines for parallel token checking
  */
 func (lexer *Lexer) init() {
 
@@ -149,6 +165,9 @@ func (lexer *Lexer) init() {
 }
 
 /*
+ * Lexer method
+ * walk
+ * Purpose: runs the tokenizer and loops through the string/file
  */
 func (lexer *Lexer) walk(run func()) {
 
@@ -179,6 +198,9 @@ func (lexer *Lexer) walk(run func()) {
 }
 
 /*
+ * Lexer method
+ * add_rule
+ * Purpose: adds a rule to the lexer for parallel type checking
  */
 func (lexer Lexer) add_rule(rule_func func(Lexer) Lexer) Lexer {
 	lexer.rules = append(lexer.rules, rule_func)
@@ -187,7 +209,7 @@ func (lexer Lexer) add_rule(rule_func func(Lexer) Lexer) Lexer {
 
 /*
  * Lexer method start
- * starts the lexer at position n
+ * Purpose: starts the lexer at position n
  * REQUIRED FOR LEXER TO WORK
  */
 func (lexer Lexer) start() Lexer {
@@ -208,7 +230,7 @@ func (lexer Lexer) start() Lexer {
 
 /*
  * Lexer method end
- * stops the lexer and checks for success
+ * Purpose: stops the lexer and checks for success
  * REQUIRED FOR LEXER TO WORK PROPERLY
  */
 func (lexer Lexer) end() Lexer {
