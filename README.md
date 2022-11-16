@@ -37,7 +37,7 @@ Other goals
 
 Lexer features completed (may be added to as I learn):
 - [x] Basic lexing functions
-- [ ] Parralell lexing (in progress)
+- [ ] ***Parralell lexing*** (in progress)
 
 MALASM
 - [ ] ... (placeholder, more will be added. Will be elaborated on, may be removed later.)
