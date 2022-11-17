@@ -1,5 +1,6 @@
 package main
 
+
 /*
  * FILE: lexer.go
  * PURPOSE: holds the lexer functions
@@ -22,28 +23,45 @@ const (
 
 /*
 used in testing
-TODO: fix many notable inconsitencies with the paralell token checker
+TODO: fix many notable inconsitencies with the paralell token analyzing
+[LATER] TODO: instead of reading the raw string, use paralell loops to loop through and process the application 
+[LATER] TODO: instead of commenting out debug print statements, make a seperate abstraction/function for them that checks if the compiler is in debug mode and executes them if it is
 */
 func main() {
-	lexer := new_lexer("var no = 0; func hi() {mmm}")
+	
+	lexer := new_lexer("var no=0;var x=0;func hi() {mmm};")
 
 	lexer = lexer.add_rule(func(lex Lexer) Lexer {
+		//fmt.Println("VAR");
+		
 		lex = lex.start().next_string("var", LogTypeSeperate).next_string("=", LogTypeRemoveWhitespace+LogTypeNoSelf).next_string(";", LogTypeNoSelf)
 
-		fmt.Println(lex)
+		// PRINT STATEMENTS FOR DEBUG
+	  fmt.Println("\nVAR: ", lex, "\n")
+		// fmt.Println("CHECK:", lex.check);
+		// fmt.Println("CURRENT POSITION:", lex.position);
+		// fmt.Println("CURRENT CHAR:", string(lex.program[lex.position-1]));
+		
 		lex = lex.end()
 		return lex
 	})
 
 	lexer = lexer.add_rule(func(lex Lexer) Lexer {
+		// fmt.Println("FUNC");
+		
 		lex = lex.start().next_string("func", LogTypeSeperate).next_string("(", LogTypeRemoveWhitespace+LogTypeNoSelf).next_string(")", LogTypeNoSelf).next_string("{", LogTypeNoSelf).next_string("}", LogTypeNoSelf)
 
-		fmt.Println(lex)
+		// PRINT STATEMENTS FOR DEBUG
+	  fmt.Println("\nFUNC: ", lex, "\n")
+		// fmt.Println("CHECK:", lex.check);
+		// fmt.Println("CURRENT POSITION:", lex.position);
+		//fmt.Println("CURRENT CHAR:", string(lex.program[lex.position-1]));
+		
 		lex = lex.end()
 		return lex
 	})
 
-	(&lexer).init()
+	lexer.init()
 
 	lexer.walk(func() {})
 }
@@ -137,29 +155,53 @@ func (lexer *Lexer) init() {
 
 	for rule_index := 0; rule_index < len(lexer.rules); rule_index++ {
 
-		go func(r_index int) {
+		go func(r_index int, lexer *Lexer) {
 			
-			lex := &lexer
+			// we usually try to avoid pointers, but it is needed to edit the lexer in a coroutine, since we cannot return anything
+			// (lex_out = copy of the origional lexer)
 			lex_out := *lexer
-			lex_rule := (**lex).rules[r_index]
-			
+			lex_rule := (*lexer).rules[r_index]
 
 			for true {
-				if (**lex).check {
+				
+				if (*lexer).check {
+
+					// PRINT STATEMENTS FOR DEBUG
+					// fmt.Println("LEX STATE: ", *lexer)
+					// fmt.Println("CLONE STATE: ", lex_out)
+
+					// runs/calls the rule
 					lex_out = lex_rule(lex_out)
 					if lex_out.continue_lexer {
-						**lex = lex_out
-						(**lex).check = false
-						(**lex).success = true
-					} else {
-						(**lex).finish += 1
-						for (**lex).check {
-						}
-					}
-				}
-			}
+						lex_out.success = true
+						// replaces origional lexer with the copy because the current line did pertain to the rule
+						*lexer = lex_out
+					
 
-		}(rule_index)
+						
+					} else {
+						
+						
+						
+						// add to the (origional) finish variable, shows that the current line does not pertain to the semantics/rule
+						(*lexer).finish += 1
+
+						// waits for another compiler loop (line)
+						for (*lexer).check {
+						
+						}
+						fmt.Println("no");
+						lex_out=*lexer;
+						
+				
+					}
+					
+				}
+				
+			}
+			
+
+		}(rule_index, lexer)
 
 	}
 }
@@ -170,7 +212,7 @@ func (lexer *Lexer) init() {
  * Purpose: runs the tokenizer and loops through the string/file
  */
 func (lexer *Lexer) walk(run func()) {
-
+  
 	// lexer has to have at least one rule for the walk function to work
 	if len(lexer.rules) < 1 {
 		fmt.Println(fmt.Errorf("ERROR: Lexer has to have at least one rule for 'func walk()' to be called."))
@@ -178,22 +220,30 @@ func (lexer *Lexer) walk(run func()) {
 	}
 
 	for true {
+				// fmt.Println("\nERROR CHECK TEST:", lexer.finish, " ", len(lexer.rules));
+		if lexer.finish >= len(lexer.rules) {
+				fmt.Println("ERROR");
+				return
+			}
 
-		if lexer.position >= len(lexer.program) {
+		if lexer.position >= len(lexer.program)-1 {
 			break
 		}
 		lexer.check = true
 
 		run()
-
+		
 		for lexer.success == false {
 			if lexer.success == true {
+				lexer.finish = 0;
 				break
 			}
 			if lexer.finish >= len(lexer.rules) {
+				fmt.Println("ERROR");
 				return
 			}
 		}
+		
 	}
 }
 
@@ -268,7 +318,7 @@ func (lexer Lexer) next_string(get string, log int) Lexer {
 		 * x is the length of the stop_code list
 		 */
 		for inc := 0; inc < len(lexer.program); inc++ {
-
+			
 			if lexer.position+1 < len(lexer.program) {
 
 				if lexer.stop_code[lexer.program[lexer.position:lexer.position+1]] == 1 {
@@ -290,6 +340,9 @@ func (lexer Lexer) next_string(get string, log int) Lexer {
 				break
 			}
 
+			//PRINT STATEMENT FOR DEBUG
+		  fmt.Println("CURRENT SLICE ", get, ": ", lexer.program[lexer.position:lexer.position+len(get)])
+			
 			// tests for the token
 			// by getting a slice
 			// of the program
@@ -302,9 +355,17 @@ func (lexer Lexer) next_string(get string, log int) Lexer {
 
 				}
 
+				// PRINT STATEMENT FOR DEBUG
+				// fmt.Println("BEFORE JMP: ", lexer.position)
+				
 				//skips past token once found
 				//so inf loops are avoided
 				lexer.position += len(get)
+
+				// PRINT STATEMENT FOR DEBUG
+				//fmt.Println("SUCCESS ",get);
+				 //fmt.Println("AFTER JMP: ", lexer.position)
+				
 				break
 			}
 
