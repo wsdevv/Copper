@@ -35,9 +35,9 @@ Other goals
 
 # Progress/Roadmap
 
-Lexer features completed (may be added to as I learn):
+Lexer features completed (may be added to as I learn) (Lexer now located in the [Silver](https://github.com/) repo):
 - [x] Basic lexing functions
-- [ ] ***Parralell lexing*** (in progress)
+- [ ] ***Concurrent lexing*** *In progress
 
 MALASM
 - [ ] ... (placeholder, more will be added. Will be elaborated on, may be removed later.)
