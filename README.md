@@ -5,21 +5,19 @@
 - Changed back to origional name (I don't know why I changed it anyway)
 
 # Copper
-A Open source compiled programming language, In development.
+A open source compiled programming language, In development.
 (Note: I failed to specify this earlier, but this is a personal project, and there are no guarentees  that it will ever be completed)
 
-NOTICE:
-- Copper is in early development, pardon me if files and programming are messy. Some operations may also not work.
 
 # Goals
-Copper is an general-purpose OOP language.
+Copper will be a general-purpose, flexible, OOP language.
 
-PaintLs main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
+Coppers main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
 language looks without having to make their own. You will not have to download the source code to make changes to the language.
 
 Example:
 
-Change the normal declaration of a variable in PaintL:
+Change the normal declaration of a variable in Copper:
 
 ```var myvar = "hello, world!" ```
 
@@ -38,6 +36,7 @@ Other goals
 Lexer features completed (may be added to as I learn) (Lexer now located in the [Silver](https://github.com/) repo):
 - [x] Basic lexing functions
 - [ ] ***Concurrent lexing*** *In progress
+- [ ] Complex lexing functions
 
 MALASM
 - [ ] ... (placeholder, more will be added. Will be elaborated on, may be removed later.)
