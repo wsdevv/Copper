@@ -2,14 +2,14 @@
 
 # Status 
 - Lexer is being rewritten, goals are being changed, and some files are currently empty. I am Trying to start the project back up, currently uncompilable and unusable.
-- Changed back to origional name (I don't know why I changed it anyway)
+- Changed back to origional name (I don't know why I changed it in the first place)
 
 # Copper
 A open source compiled programming language, In development.
 (Note: I failed to specify this earlier, but this is a personal project, and there are no guarentees  that it will ever be completed)
 
 
-# Goals
+## Goals
 Copper will be a general-purpose, flexible, OOP language.
 
 Coppers main goal is to allow easy editability of its syntax, so programmers are in total control of how their programming
@@ -31,17 +31,19 @@ Other goals
 - make the programming language secure.
 - make a transpiler: projects are transpiled to and from a global standard syntax so everyone can understand the base code.
 
-# Progress/Roadmap
+## Progress/Roadmap
 
 Lexer features completed (may be added to as I learn) (Lexer now located in the [Silver](https://github.com/) repo):
 - [x] Basic lexing functions
 - [ ] ***Concurrent lexing*** *In progress
 - [ ] Complex lexing functions
 
-MALASM
-- [ ] ... (placeholder, more will be added. Will be elaborated on, may be removed later.)
+#### MALASM/MALASM JIT (Malleable "assembly")
+- [ ] modified openjdk JIT (possibly custom GraalVM vm)
+- [ ] modified java bytecode
+- [ ] ... (placeholder, more will be added)
 
-Compiler/general programming language features completed (may be added to and rearranged as I learn and develop the language): 
+#### Compiler/general programming language features completed (may be added to and rearranged as I learn and develop the language): 
 
 - [ ] declaring and initializing mutable variables
 - [ ] declaring and initializing constant/immmutable variables
@@ -69,10 +71,6 @@ Compiler/general programming language features completed (may be added to and re
 - [ ] enumerations
 - [ ] Interfaces
 - [ ] Superclasses
-- [ ] Finish the std library
-- [ ] OpenGL libs
-- [ ] OpenAL libs
-- [ ] Simple networking libs
 - [ ] ... (placeholder, more will be added)
 
 Customization features completed (may be added to and rearranged as I learn and develop the language):
