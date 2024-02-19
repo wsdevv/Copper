@@ -1,12 +1,11 @@
 **********************************
 
 # Status 
-- Lexer is being rewritten, goals are being changed, and some files are currently empty. I am Trying to start the project back up, currently uncompilable and unusable.
-- Changed back to origional name (I don't know why I changed it in the first place)
+- Dead (for now) (mainly a study project)
 
 # Copper
 A open source compiled programming language, In development.
-(Note: I failed to specify this earlier, but this is a personal project, and there are no guarentees  that it will ever be completed)
+(Note: I failed to specify this earlier, but this is a personal project, and there are no guarentees that it will ever be completed)
 
 
 ## Goals
